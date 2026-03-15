@@ -6,10 +6,15 @@
 #include "include/Animal.h"
 #include "include/Animaux.h"
 
-const int MAXX = 10;
-const int MAXY = 10;
+const int MAXX = 10; ///< Largeur du plateau
+const int MAXY = 10; ///< Hauteur du plateau
 
-// Affiche le plateau : L=Lion, U=Loup, O=Ours, P=Pierre, .=vide
+/**
+ * @brief Affiche le plateau de jeu.
+ *
+ * Utilise les symboles L=Lion, U=Loup, O=Ours, P=Pierre, .=vide
+ * @param animaux Liste des animaux
+ */
 void afficherPlateau(const std::vector<Animal*>& animaux) {
     char grille[MAXX][MAXY];
     for (int i = 0; i < MAXX; i++)
@@ -37,7 +42,11 @@ void afficherPlateau(const std::vector<Animal*>& animaux) {
     std::cout << "+----------+" << std::endl;
 }
 
-// Crée un nouvel animal de la même espèce, placé aléatoirement
+/**
+ * @brief Crée un nouvel animal de la même espèce.
+ * @param a Animal modèle
+ * @return Pointeur vers le nouvel animal
+ */
 Animal* spawner(Animal* a) {
     if (a->getNom() == "Lion")   return new Lion(MAXX, MAXY);
     if (a->getNom() == "Loup")   return new Loup(MAXX, MAXY);
@@ -46,9 +55,13 @@ Animal* spawner(Animal* a) {
     return nullptr;
 }
 
-// Résout les conflits sur chaque cellule :
-// - même espèce → spawn d'un nouvel animal de cette espèce
-// - espèces différentes → combats jusqu'à ce qu'il n'en reste qu'un
+/**
+ * @brief Résout les conflits sur chaque cellule.
+ *
+ * - Même espèce → reproduction
+ * - Espèces différentes → combats jusqu'à un survivant
+ * @param animaux Liste des animaux (modifiée)
+ */
 void resoudreConflits(std::vector<Animal*>& animaux) {
     std::vector<Animal*> nouveaux;
 
@@ -105,6 +118,11 @@ void resoudreConflits(std::vector<Animal*>& animaux) {
         animaux.push_back(a);
 }
 
+/**
+ * @brief Compte le nombre d'animaux vivants.
+ * @param animaux Liste des animaux
+ * @return Nombre d'animaux vivants
+ */
 int nbVivants(const std::vector<Animal*>& animaux) {
     int n = 0;
     for (Animal* a : animaux)
@@ -112,6 +130,9 @@ int nbVivants(const std::vector<Animal*>& animaux) {
     return n;
 }
 
+/**
+ * @brief Fonction principale : lance la simulation.
+ */
 int main() {
     srand(time(NULL));
 
